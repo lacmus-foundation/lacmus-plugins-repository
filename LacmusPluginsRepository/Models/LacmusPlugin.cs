@@ -1,0 +1,37 @@
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using LacmusPlugin;
+using LacmusPlugin.Enums;
+using Newtonsoft.Json;
+
+namespace LacmusPluginsRepository.Models
+{
+    [JsonObject]
+    public class LacmusPlugin : IObjectDetectionPlugin
+    {
+        [JsonProperty("Tag")] 
+        public string Tag { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
+        [JsonProperty("author")]
+        public string Author { get; set; }
+        [JsonProperty("company")]
+        public string Company { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+        [JsonProperty("version")]
+        public Version Version { get; set; }
+        [JsonProperty("inferenceType")]
+        public InferenceType InferenceType { get; set; }
+        [JsonProperty("operatingSystems")]
+        public HashSet<OperatingSystem> OperatingSystems { get; set; }
+        
+        public IObjectDetectionModel LoadModel(float threshold)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}
