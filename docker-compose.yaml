@@ -1,0 +1,12 @@
+version: '3.6'
+
+services:
+  plugin-repository-api:
+    build:
+      context: LacmusPluginsRepository
+      dockerfile: Dockerfile
+    container_name: plugin-repository
+    volumes:
+      - ./plugins:/app/plugins
+    ports:
+      - 80:80

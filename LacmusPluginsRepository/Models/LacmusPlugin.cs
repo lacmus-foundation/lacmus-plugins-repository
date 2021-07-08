@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using LacmusPlugin;
 using LacmusPlugin.Enums;
 using Newtonsoft.Json;
@@ -9,7 +8,7 @@ namespace LacmusPluginsRepository.Models
     [JsonObject]
     public class LacmusPlugin : IObjectDetectionPlugin
     {
-        [JsonProperty("Tag")] 
+        [JsonProperty("tag")] 
         public string Tag { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }

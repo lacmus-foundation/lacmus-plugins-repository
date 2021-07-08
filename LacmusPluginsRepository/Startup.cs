@@ -38,10 +38,14 @@ namespace LacmusPluginsRepository
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "plugin-repository/docs/{documentname}/swagger.json";
+            });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                c.SwaggerEndpoint("v1/swagger.json", "API v1");
+                c.RoutePrefix = "plugin-repository/docs";
             });
 
 

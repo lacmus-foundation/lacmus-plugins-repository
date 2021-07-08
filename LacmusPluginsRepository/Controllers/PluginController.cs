@@ -10,11 +10,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace LacmusPluginsRepository.Controllers
 {
-    [Route("api/v1")]
+    [Route("plugin-repository/api/v1")]
     public class PluginController : Controller
     {
         private List<IObjectDetectionPlugin> _plugins;
-        private PluginManager _pluginManager;
+        private readonly PluginManager _pluginManager;
         private string _packagesBaseDirectory;
         
         public PluginController(IConfiguration configuration)
@@ -25,23 +25,27 @@ namespace LacmusPluginsRepository.Controllers
         }
         // GET
         [HttpGet]
-        [Route("plugins")]
-        public ActionResult<PluginsResponse> GetPlugins(int page = 0)
+        [Route("pagesCount")]
+        public ActionResult<PagesCount> GetMaxPage()
         {
-            var response = new PluginsResponse
-            {
-                Plugins = _plugins,
-                MaxPage = 1
-            };
-            return Ok(response);
+            return Ok(new PagesCount{ Count = 1 });
+        }
+        
+        [HttpGet]
+        [Route("plugins")]
+        public ActionResult<IEnumerable<IObjectDetectionPlugin>> GetPlugins(int page = 0)
+        {
+            if (page == 0)
+                return Ok(_plugins);
+            return NotFound();
         }
         
         [HttpGet]
         [Route("plugin")]
         public ActionResult Index([Required, MinLength(1)]string tag, 
                                   [Required, Range(2, 2)]int api, 
-                                  [Required, Range(0, Int32.MaxValue)]int major,
-                                  [Required, Range(0, Int32.MaxValue)]int minor)
+                                  [Required, Range(0, int.MaxValue)]int major,
+                                  [Required, Range(0, int.MaxValue)]int minor)
         {
             var packagePath =Path.Join(_packagesBaseDirectory, $"{tag}_{api}.{major}.{minor}.zip");
             if (!System.IO.File.Exists(packagePath))
