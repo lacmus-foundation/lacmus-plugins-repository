@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="LacmusPlugin" Version="2.0.2" />
+      <PackageReference Include="LacmusPlugin" Version="2.0.3" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.5" />
     </ItemGroup>
