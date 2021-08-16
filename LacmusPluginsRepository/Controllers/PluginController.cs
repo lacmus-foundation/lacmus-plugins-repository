@@ -13,15 +13,10 @@ namespace LacmusPluginsRepository.Controllers
     [Route("plugin-repository/api/v1")]
     public class PluginController : Controller
     {
-        private List<IObjectDetectionPlugin> _plugins;
-        private readonly PluginManager _pluginManager;
         private string _packagesBaseDirectory;
-        
         public PluginController(IConfiguration configuration)
         {
-            _pluginManager = new PluginManager(Path.Join(configuration["PluginsBaseDirectory"], "src"));
             _packagesBaseDirectory = Path.Join(configuration["PluginsBaseDirectory"], "packages");
-            _plugins = _pluginManager.FindPlugins();
         }
         // GET
         [HttpGet]
@@ -33,10 +28,12 @@ namespace LacmusPluginsRepository.Controllers
         
         [HttpGet]
         [Route("plugins")]
-        public ActionResult<IEnumerable<IObjectDetectionPlugin>> GetPlugins(int page = 0)
+        public ActionResult<IEnumerable<IObjectDetectionPlugin>> GetPlugins(
+            [FromServices] IEnumerable<IObjectDetectionPlugin> plugins, 
+            int page = 0)
         {
             if (page == 0)
-                return Ok(_plugins);
+                return Ok(plugins);
             return NotFound();
         }
         

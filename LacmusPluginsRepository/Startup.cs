@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LacmusPlugin;
+using LacmusPluginsRepository.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,9 +17,15 @@ namespace LacmusPluginsRepository
 {
     public class Startup
     {
+        private List<IObjectDetectionPlugin> _plugins;
+        private readonly PluginManager _pluginManager;
+        private string _packagesBaseDirectory;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _pluginManager = new PluginManager(Path.Join(configuration["PluginsBaseDirectory"], "src"));
+            _packagesBaseDirectory = Path.Join(configuration["PluginsBaseDirectory"], "packages");
+            _plugins = _pluginManager.FindPlugins();
         }
 
         public IConfiguration Configuration { get; }
@@ -24,6 +33,8 @@ namespace LacmusPluginsRepository
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IEnumerable<IObjectDetectionPlugin>, List<IObjectDetectionPlugin>>(
+                p => _plugins);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
