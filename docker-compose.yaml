@@ -8,5 +8,8 @@ services:
     container_name: plugin-repository
     volumes:
       - ./plugins:/app/plugins
-    ports:
-      - 80:80
+    networks:
+      - proxynet
+networks:
+  proxynet:
+    name: proxynet
