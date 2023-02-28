@@ -40,3 +40,5 @@ msbuild.wrn
 *.pb
 *.onnx
 *.pth
+
+plugins/
